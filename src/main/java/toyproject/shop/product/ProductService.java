@@ -18,15 +18,19 @@ public class ProductService {
 
 
     @Transactional
-    public Long saveProduct(Product product) {
-        validateDuplicateProduct(product);
-        Product savedProduct = productRepository.save(product);
+    public Long saveProduct(ProductDto productDto) {
+        validateDuplicateProduct(productDto);
 //        productRepository.saveProduct(product);
-        return savedProduct.getProductId();
+        Product product = Product.builder()
+                .productName(productDto.getProductName())
+                .productPrice(productDto.getProductPrice())
+                .build();
+
+        return productRepository.save(product).getProductId();
     }
 
-    public void validateDuplicateProduct(Product product) {
-        productRepository.findById(product.getProductId())
+    public void validateDuplicateProduct(ProductDto productDto) {
+        productRepository.findByProductName(productDto.getProductName())
                 .ifPresent(p -> {
                     throw new IllegalStateException("이미 존재하는 상품입니다.");
                 });

@@ -12,7 +12,8 @@ import java.util.Optional;
 
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
-@Controller
+@RestController
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     @Autowired
@@ -20,29 +21,28 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<Void> saveProduct(@RequestBody Product product) {
-        Long productId = productService.saveProduct(product);
+    @PostMapping()
+    public ResponseEntity<Void> saveProduct(@RequestBody ProductDto productDto) {
+        Long productId = productService.saveProduct(productDto);
         URI uri = fromPath("/products/{productId}")
                 .buildAndExpand(productId)
                 .toUri();
         return ResponseEntity.created(uri).build();
     }
 
-
-    @GetMapping("/products")
+    @GetMapping()
     public ResponseEntity<List<Product>> findAllProducts() {
         List<Product> products = productService.findAllProducts();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/products/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<Product> findProductById(@PathVariable Long productId) {
         Optional<Product> product = productService.findById(productId);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
         productService.deleteById(productId);
         return ResponseEntity.ok("상품 제거 성공");
