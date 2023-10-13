@@ -1,19 +1,16 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/./shop
-    username: sa
-    password: 123
-    driver-class-name: org.h2.Driver
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shop?serverTimezone=Asia/Seoul
+    username: root
+    password: root
   jpa:
+    open-in-view: true
     hibernate:
-      ddl-auto: create
+      # create : 실행할 때마다 테이블을 drop 하고 다시 생성
+      ddl-auto: update
+    # 로그에 sql 문을 출력
+    show-sql: true
     properties:
-      hibernate:
-        #        show_sql: true   // system.out으로 출력 <--> org.hibernate.SQL: debug 로그로 출력
-        format_sql: true
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
+      # 로그에 sql 문을 formatting 해서 출력
+      hibernate.format_sql: true
