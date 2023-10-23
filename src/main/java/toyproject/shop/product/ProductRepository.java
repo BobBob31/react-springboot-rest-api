@@ -6,5 +6,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Product> findByProductName(@Param("productName")String productName);
+    Optional<Product> findByName(@Param("name")String name);
 }

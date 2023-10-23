@@ -2,6 +2,8 @@ package toyproject.shop.productorder;
 
 import jakarta.persistence.*;
 import lombok.*;
+import toyproject.shop.product.Product;
+import toyproject.shop.user.User;
 
 import java.time.LocalDateTime;
 
@@ -14,16 +16,17 @@ import java.time.LocalDateTime;
 public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "ORDER_ID")
-    private Long orderId;
-    //    @Column(name = "USER_ID")
-    @Column(name = "userId")
-    private Long userId;
-    //    @Column(name = "PRODUCT_ID")
-    @Column(name = "productId")
-    private Long productId;
+    private Long id;
 
-    private LocalDateTime orderDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    private LocalDateTime date;
 
 
 

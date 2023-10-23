@@ -11,9 +11,9 @@ import lombok.*;
 @Builder
 public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "PRODUCT_ID")
-    private Long productId;
+    @Column(name = "product_id")
+    private Long id;
 
-    private String productName;
-    private int productPrice;
+    private String name;
+    private int price;
 }

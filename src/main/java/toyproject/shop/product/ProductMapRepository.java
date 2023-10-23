@@ -9,7 +9,7 @@ public class ProductMapRepository {
     private static Map<Long, Product> store = new HashMap<>();
 
     public void saveProduct(Product product) {
-        store.put(product.getProductId(), product);
+        store.put(product.getId(), product);
     }
 
     public Optional<Product> findById(Long id) {
@@ -18,7 +18,7 @@ public class ProductMapRepository {
 
     public Optional<Product> findByName(String name) {
         return store.values().stream()
-                .filter(product -> product.getProductName().equals(name))
+                .filter(product -> product.getName().equals(name))
                 .findAny();
     }
 

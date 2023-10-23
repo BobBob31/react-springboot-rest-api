@@ -1,36 +1,46 @@
 package toyproject.shop.productorder;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.shop.product.Product;
+import toyproject.shop.product.ProductRepository;
+import toyproject.shop.user.User;
+import toyproject.shop.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductOrderService {
     private final ProductOrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    public ProductOrderService(ProductOrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+//    @Autowired
+//    public ProductOrderService(ProductOrderRepository orderRepository) {
+//        this.orderRepository = orderRepository;
+//    }
 
     // order 정보 생성
     @Transactional
     public Long saveOrder(Long userId, Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         ProductOrder order = ProductOrder.builder()
-                .orderDate(LocalDateTime.now())
-                .productId(productId)
-                .userId(userId)
+                .date(LocalDateTime.now())
+                .product(product)
+                .user(user)
                 .build();
-        return orderRepository.save(order).getOrderId();
+        return orderRepository.save(order).getId();
     }
 
     // 사용자에 대한 주문 전체 조회
     public List<ProductOrder> findAllOrders(Long userId) {
         List<ProductOrder> orders = orderRepository.findAll().stream()
-                .filter(u -> u.getUserId().equals(userId))
+                .filter(u -> u.getUser().getId().equals(userId))
                 .toList();
         return orders;
     }
@@ -43,7 +53,7 @@ public class ProductOrderService {
     // 사용자 주문 목록 전체 삭제
     public void deleteAllOrders(Long userId) {
         List<ProductOrder> orders = orderRepository.findAll().stream()
-                .filter(u -> u.getUserId().equals(userId))
+                .filter(u -> u.getId().equals(userId))
                 .toList();
         orderRepository.deleteAll(orders);
     }

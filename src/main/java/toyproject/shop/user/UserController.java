@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(userService.signIn(userDto));
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("사용자 삭제");

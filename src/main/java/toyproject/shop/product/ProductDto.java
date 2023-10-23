@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ProductDto {
-    private String productName;
-    private int productPrice;
+    private String name;
+    private int price;
 
 
 }

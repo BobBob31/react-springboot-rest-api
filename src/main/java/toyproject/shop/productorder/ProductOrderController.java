@@ -21,7 +21,7 @@ public class ProductOrderController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<Void> saveOrder(@PathVariable Long userId, @RequestBody ProductOrderDto orderDto) {
-        Long orderId = orderService.saveOrder(userId, orderDto.getProductId());
+        Long orderId = orderService.saveOrder(userId, orderDto.getId());
         URI uri = fromPath("/orders/{orderId}")
                 .buildAndExpand(orderId)
                 .toUri();
@@ -46,22 +46,5 @@ public class ProductOrderController {
         return ResponseEntity.ok("상품 제거 성공");
 
     }
-    /*
-    주문 전체 조회
-Get: /orders
-Get: /orders/{userId}
-
-주문 개별 조회
-Get: /orders/{id}
-Get: /orders/{userId}/{orderId}
-
-주문 전체 삭제
-Delete: /orders
-Delete: /orders/{userId}
-
-주문 개별 삭제
-Delete: /orders/{id}
-Delete: /orders/{userId}/{orderId}
-     */
 
 }
