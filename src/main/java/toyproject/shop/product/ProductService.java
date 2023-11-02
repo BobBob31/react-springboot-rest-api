@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.shop.exception.CustomErrorCode;
+import toyproject.shop.exception.CustomException;
 import toyproject.shop.user.UserRepository;
 
 import java.util.List;
@@ -35,7 +37,8 @@ public class ProductService {
     public void validateDuplicateProduct(ProductDto productDto) {
         productRepository.findByName(productDto.getName())
                 .ifPresent(p -> {
-                    throw new IllegalStateException("이미 존재하는 상품입니다.");
+                    throw new CustomException(CustomErrorCode.DUPLICATE_PRODUCT_ERROR);
+//                            IllegalStateException("이미 존재하는 상품입니다.");
                 });
     }
 

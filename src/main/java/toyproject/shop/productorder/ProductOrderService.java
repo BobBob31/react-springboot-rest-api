@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.shop.exception.CustomErrorCode;
+import toyproject.shop.exception.CustomException;
 import toyproject.shop.product.Product;
 import toyproject.shop.product.ProductRepository;
 import toyproject.shop.user.User;
@@ -27,8 +29,10 @@ public class ProductOrderService {
     // order 정보 생성
     @Transactional
     public Long saveOrder(Long userId, Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다"));
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new CustomException(CustomErrorCode.PRODUCT_NOT_FOUND_ERROR));
+//                IllegalArgumentException("상품을 찾을 수 없습니다"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(CustomErrorCode.EMAIL_NOT_FOUND_ERROR));
+//                IllegalArgumentException("사용자를 찾을 수 없습니다."));
         ProductOrder order = ProductOrder.builder()
                 .date(LocalDateTime.now())
                 .product(product)
